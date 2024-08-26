@@ -1,0 +1,22 @@
+	$.soap({
+		url: 'http://localhost:9000/soap',
+		method: 'sei:adicionar',
+		appendMethodToURL: false,
+		javaNamespace: 'sei',					
+		contentType: 'text/xml',
+		SOAPAction: '"http://sei/adicionar"',
+		beforeSend: function(req) {
+			console.log(req);
+		},					
+		data: {variavel: 1},
+		success: function (res) {
+			//alert(res.toString());
+			alert($(res.toXML()).find('return').text());
+		},
+		error: function (res) {
+			alert('erro');
+			for (p in res) {
+				console.log(p);
+			}
+		}
+	});
