@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TraducaoFront</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script type="text/javascript" src="jquery-3.7.1.min.js"></script>
+    <script type="text/javascript" src="jquery.soap.js"></script>
+    <script type="text/javascript">
+        $(document).ready(() => {
+            $('#frmTraducao').submit((evento) => {
+                evento.preventDefault();
+                $.soap({
+                    url: 'http://localhost:9000/soap',
+                    method: 'sei:traduzir',
+                    appendMethodToURL: false,
+                    javaNamespace: 'sei',
+                    contentType: 'text/xml',
+                    SOAPAction: '"http://sei/traduzir"',
+                    beforeSend: function (req) {
+                        console.log(req);
+                    },
+                    data: {
+                        palavra: $('#edPalavra').val()
+                    },
+                    success: function (res) {
+                        //alert(res.toString());
+                        alert($(res.toXML()).find('return').text());
+                    },
+                    error: function (res) {
+                        alert('erro');
+                        for (p in res) {
+                            console.log(p);
+                        }
+                    }
+                });
+            });
+        });
+
+
+    </script>
+
+</head>
+
+<body>
+    <div class="container"></div>
+    <div class="row"></div>
+    <div class="col-md-12"></div>
+    <h1>Traducao</h1>
+    <form id="frmTraducao">
+        <input type="text" class="form-control" id="edPalavra" placeholder="Palavra" />
+        <button class="btn btn-primary mt-3">Traduzir</button>
+    </form>
+</body>
+
+</html>
